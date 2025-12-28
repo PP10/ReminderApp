@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ReminderApp.Api/ReminderApp.Api.csproj" />
+  <Project Path="ReminderApp.Application/ReminderApp.Application.csproj" />
+  <Project Path="ReminderApp.Domain/ReminderApp.Domain.csproj" />
+  <Project Path="ReminderApp.Infrastructure/ReminderApp.Infrastructure.csproj" />
+</Solution>
