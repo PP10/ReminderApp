@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ReminderApp.Application\ReminderApp.Application.csproj" />
+    <ProjectReference Include="..\ReminderApp.Infrastructure\ReminderApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
