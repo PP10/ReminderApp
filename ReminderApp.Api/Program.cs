@@ -42,4 +42,32 @@ app.MapPost("/reminders", (CreateReminderRequest request, IReminderRepository re
     return  Results.Created($"/reminders/{reminder.Id}", reminder);
 });
 
+app.MapPut("/reminders/{id:guid}", (Guid id, UpdateReminderRequest request, IReminderRepository repository) =>
+{
+    var existing = repository.GetAll().First();
+    if (existing is null)
+    {
+        return Results.NotFound();
+    }
+
+    existing.Title = request.Title;
+    existing.Description = request.Description;
+    existing.DueDate = request.DueDate;
+    existing.IsCompleted = request.IsComplet;
+
+    //repository.
+    return Results.Ok(existing);
+});
+
+app.MapDelete("/reminders/{id:guid}", (Guid id, IReminderRepository repository) =>
+{
+    var existing = repository.GetById(id);
+    if (existing is null)
+    {
+        return Results.NotFound();
+    }
+
+    repository.Delete(id);
+    return Results.NoContent();
+});
 app.Run();
