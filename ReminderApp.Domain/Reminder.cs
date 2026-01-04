@@ -7,4 +7,16 @@ public class Reminder
     public string? Description {get; set;}
     public DateTime DueDate {get; set;}
     public bool IsCompleted {get; set;}
+
+    public void Validate()
+    {
+        if (string.IsNullOrWhiteSpace(Title))
+        {
+            throw new ArgumentException("Title is required.");
+        }
+        if (DueDate < DateTime.UtcNow)
+        {
+            throw new ArgumentException("DueDate cannot be in the past.");
+        }
+    }
 }
