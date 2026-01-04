@@ -27,6 +27,15 @@ app.MapGet("/reminders", (IReminderRepository repository) =>
     return Results.Ok(reminders);
 });
 
+app.MapGet("/reminders/{id:guid}", (Guid id, IReminderRepository repository) =>
+{
+    var reminder =  repository.GetById(id);
+    if (reminder is null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(reminder);
+});
 
 app.MapPost("/reminders", (CreateReminderRequest request, IReminderRepository repository) =>
 {
