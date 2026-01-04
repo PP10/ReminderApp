@@ -30,13 +30,22 @@ app.MapGet("/reminders", (IReminderRepository repository) =>
 
 app.MapPost("/reminders", (CreateReminderRequest request, IReminderRepository repository) =>
 {
-   var reminder = new Reminder
-   {
-     Id = Guid.NewGuid(),
-     Title = request.Title,
-     Description = request.Description,
-     DueDate = request.DueDate
-   };
+    var reminder = new Reminder
+    {
+        Id = Guid.NewGuid(),
+        Title = request.Title,
+        Description = request.Description,
+        DueDate = request.DueDate
+    };
+
+    try
+    {
+        reminder.Validate();
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new {error = ex.Message});
+    }
 
     repository.Add(reminder);
     return  Results.Created($"/reminders/{reminder.Id}", reminder);
@@ -55,7 +64,17 @@ app.MapPut("/reminders/{id:guid}", (Guid id, UpdateReminderRequest request, IRem
     existing.DueDate = request.DueDate;
     existing.IsCompleted = request.IsComplet;
 
-    //repository.
+    try
+    {
+        existing.Validate();
+    }
+    catch(ArgumentException ex)
+    {
+        return Results.BadRequest(new {error = ex.Message});
+    }
+    
+    repository.Update(existing);
+
     return Results.Ok(existing);
 });
 
