@@ -87,6 +87,20 @@ app.MapPut("/reminders/{id:guid}", (Guid id, UpdateReminderRequest request, IRem
     return Results.Ok(existing);
 });
 
+app.MapPatch("/reminders/{id:guid}/complete", (Guid id, IReminderRepository repository) =>
+{
+    var reminder = repository.GetById(id);
+    if (reminder is null)
+    {
+        return Results.NotFound();
+    }
+    reminder.IsCompleted = true;
+
+    repository.Update(reminder);
+    
+    return Results.Ok(reminder);
+});
+
 app.MapDelete("/reminders/{id:guid}", (Guid id, IReminderRepository repository) =>
 {
     var existing = repository.GetById(id);
